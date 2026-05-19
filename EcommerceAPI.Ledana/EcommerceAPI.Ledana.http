@@ -1,0 +1,33 @@
+@EcommerceAPI.Ledana_HostAddress = https://localhost:7077
+
+###
+
+GET {{EcommerceAPI.Ledana_HostAddress}}/api/product/18
+
+###
+
+POST {{EcommerceAPI.Ledana_HostAddress}}/api/product
+Content-Type: application/json
+
+{
+"name": "ColorFull Keyboard",
+"price": 45.99,
+"categoryId": 1
+}
+
+###
+
+
+PUT {{EcommerceAPI.Ledana_HostAddress}}/api/product/18
+Content-Type: application/json
+
+{
+"name": "ColorFull Keyboard",
+"price": 15.99,
+"categoryId": 1
+}
+###
+
+GET {{EcommerceAPI.Ledana_HostAddress}}/api/sale
+
+###
