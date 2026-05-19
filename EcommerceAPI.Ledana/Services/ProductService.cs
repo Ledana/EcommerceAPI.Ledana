@@ -23,7 +23,7 @@ namespace EcommerceAPI.Ledana.Services
         public async Task<ApiResponseDto<List<Product>?>> GetAllProducts(ProductOptions productOptions)
         {
             var query = _dbContext.Products
-                //.Include(p => p.Category)
+                .Include(p => p.Category)
                 .AsQueryable();
 
             var totalProducts = await query.CountAsync();

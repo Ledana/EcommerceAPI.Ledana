@@ -3,9 +3,9 @@
     internal class ProductUIService
     {
 
-        internal static string GetProductName()
+        internal static string GetProductName(string message)
         {
-            Console.WriteLine("Please put the name of the new product");
+            Console.WriteLine(message);
             string? name = Console.ReadLine();
             while(name is null)
             {
@@ -29,9 +29,9 @@
             return price;
         }
 
-        internal static int GetStock()
+        internal static int GetStock(string message)
         {
-            return Helper.GetIntInput("Please put the stock of new product");
+            return Helper.GetIntInput(message);
         }
     }
 }

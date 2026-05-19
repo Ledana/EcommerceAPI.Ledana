@@ -5,9 +5,9 @@ namespace ECommerceUI.Ledana.Services
     internal class CategoryUIService
     {
         static CategoryApiClient categoryApiClient = new();
-        internal static async Task<int> GetCategoryId()
+        internal static async Task<int> GetCategoryId(string message)
         {
-            int id = Helper.GetIntInput("Please choose the id of the category");
+            int id = Helper.GetIntInput(message);
             var categories = await categoryApiClient.GetCategories();
             if (categories is null) return 0;
 

@@ -17,5 +17,21 @@ namespace ECommerceUI.Ledana.UI
             }
             AnsiConsole.Write(table);
         }
+
+        internal static void ShowProducts(List<Product> products)
+        {
+            var table = new Table();
+            table.AddColumn("Id");
+            table.AddColumn("Name");
+            table.AddColumn("Category Name");
+            table.AddColumn("Stock");
+            table.AddColumn("Price");
+
+            foreach (var item in products)
+            {
+                table.AddRow(item.Id.ToString(), item.Name, item.Category.Name, item.Stock.ToString(), item.Price.ToString());
+            }
+            AnsiConsole.Write(table);
+        }
     }
 }
