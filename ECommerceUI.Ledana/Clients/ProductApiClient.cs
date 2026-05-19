@@ -1,23 +1,17 @@
 ﻿using EcommerceAPI.Ledana.DTOs;
 using EcommerceAPI.Ledana.Models;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace ECommerceUI.Ledana.Clients
 {
     internal class ProductApiClient
     {
+        private static readonly HttpClient _client = new();
         internal async Task<string> CreateProduct(ProductDto product)
         {
             try
             {
-                using HttpClient client = new();
-
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var response = await client.PostAsJsonAsync("https://localhost:7077/api/product", product);
+                var response = await _client.PostAsJsonAsync("https://localhost:7077/api/product", product);
                 if (response.IsSuccessStatusCode)
                     return "Product added successfully!";
 
@@ -33,13 +27,7 @@ namespace ECommerceUI.Ledana.Clients
         {
             try
             {
-                using HttpClient client = new();
-
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var response = await client.DeleteFromJsonAsync<ApiResponseDto<string>>($"https://localhost:7077/api/product/{id}");
+                var response = await _client.DeleteFromJsonAsync<ApiResponseDto<string>>($"https://localhost:7077/api/product/{id}");
 
                 if (response is null) return "Deleting product didn't work";
 
