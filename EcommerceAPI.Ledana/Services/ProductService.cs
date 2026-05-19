@@ -88,7 +88,22 @@ namespace EcommerceAPI.Ledana.Services
                 HasNext = hasNext
             };
         }
-
+        public async Task<ApiResponseDto<List<Product>?>> GetAllProducts()
+        {
+            var products = await _dbContext.Products.Include(p => p.Category).ToListAsync();
+            if (products is null) return new()
+            {
+                RequestFailed = true,
+                Data = null,
+                ErrorMessage = "Could not get products",
+                ResponseCode = HttpStatusCode.BadRequest
+            };
+            return new ApiResponseDto<List<Product>?>
+            {
+                ResponseCode = HttpStatusCode.OK,
+                Data = products
+            };
+        }
         public async Task<ApiResponseDto<Product?>> GetProductById(int id)
         {
             var product =  await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);

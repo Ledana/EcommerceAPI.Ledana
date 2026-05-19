@@ -42,11 +42,23 @@ namespace ECommerceUI.Ledana.Clients
             }
         }
 
+        internal async Task<ApiResponseDto<List<Product>>?> GetProducts(int pageNumber, int pageSize)
+        {
+            try
+            {
+                return await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?page_size={pageSize}&page_number={pageNumber}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting products went wrong " + e.Message);
+                return null;
+            }
+        }
         internal async Task<List<Product>?> GetProducts()
         {
             try
             {
-                var response = await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product");
+                var response =  await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product");
                 if (response is null) return null;
 
                 return response.Data;

@@ -24,8 +24,15 @@ namespace EcommerceAPI.Ledana.Controllers
 
             return Ok(products);
         }
+        [HttpGet]
+        public async Task<ActionResult<ApiResponseDto<List<Product>>>> Get()
+        {
+            var products = await _productService.GetAllProducts();
+            if (products is null) return NotFound();
 
-        
+            return Ok(products);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponseDto<Product>>> Get(int id)
         {
