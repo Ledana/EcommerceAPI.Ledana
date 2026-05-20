@@ -7,7 +7,7 @@ using Spectre.Console;
 
 namespace ECommerceUI.Ledana.Controllers
 {
-    internal class ProductController
+    internal class ProductUIController
     {
         static ProductApiClient productApiClient = new();
         static CategoryApiClient categoryApiClient = new();
@@ -28,10 +28,10 @@ namespace ECommerceUI.Ledana.Controllers
             string name = ProductUIService.GetProductName("Please put the name of the new product");
             if (name.ToLower() == "x") return;
 
-            int stock = ProductUIService.GetStock("Please put the stock of new product");
+            int stock = Helper.GetIntInput("Please put the stock of new product");// ProductUIService.GetStock("Please put the stock of new product");
             if (stock == 0) return;
 
-            decimal price = ProductUIService.GetProductPrice();
+            decimal price = Helper.GetDecimalInput("Please put the price of the product"); //ProductUIService.GetProductPrice();
             if (price == 0m) return;
 
             ProductDto product = new()
@@ -46,7 +46,7 @@ namespace ECommerceUI.Ledana.Controllers
 
         private static void ViewAllProducts(ref ApiResponseDto<List<Product>>? response, ref int pageNumber, ref int pageSize, ref bool keepRunning)
         {
-            if (response is null) { Console.WriteLine("No products found!"); return; }
+            if (response?.Data == null || response.Data.Count == 0) { Console.WriteLine("No products found!"); return; }
 
             Console.Clear();
 
@@ -131,7 +131,7 @@ namespace ECommerceUI.Ledana.Controllers
             if (Helper.IsProductIdCorrect(id, products))
             {
                 int categoryId = await CategoryUIService.GetCategoryId("Please choose the new id of the category for the product");
-                if (id == 0) return;
+                if (categoryId == 0) return;
 
                 string name = ProductUIService.GetProductName("Please put the new name of the product");
                 if (name.ToLower() == "x") return;
@@ -139,18 +139,14 @@ namespace ECommerceUI.Ledana.Controllers
                 int stock = ProductUIService.GetStock("Please put the new stock of the product");
                 if (stock == 0) return;
 
-                decimal price = ProductUIService.GetProductPrice();
-                if (price == 0m) return;
-
-                ProductDto product = new()
+                ProductUpdateDto product = new()
                 {
                     Name = name,
                     Stock = stock,
-                    Price = price,
-                    CategoryId = id
+                    CategoryId = categoryId
                 };
 
-                Console.WriteLine(await productApiClient.UpdateProduct(product));
+                Console.WriteLine(await productApiClient.UpdateProduct(id, product));
             }
             else
                 Console.WriteLine("Id is incorrect");
@@ -158,7 +154,16 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewAllProductsOrderedById()
         {
-            throw new NotImplementedException();
+            int pageNumber = 1;
+            int pageSize = 5;
+            bool keepRunning = true;
+
+            while (keepRunning)
+            {
+                var response = await productApiClient.GetProducts(pageNumber, pageSize);
+
+                ViewAllProducts(ref response, ref pageNumber, ref pageSize, ref keepRunning);
+            }
         }
 
         internal static async Task ViewAllProductsOrderedByName()
@@ -168,17 +173,49 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewAllProductsOrderedByPrice()
         {
-            throw new NotImplementedException();
+            int pageNumber = 1;
+            int pageSize = 5;
+            bool keepRunning = true;
+
+            while (keepRunning)
+            {
+                var response = await productApiClient.GetProductsOrderedByPrice(pageNumber, pageSize);
+
+                ViewAllProducts(ref response, ref pageNumber, ref pageSize, ref keepRunning);
+            }
         }
 
         internal static async Task ViewAllProductsOrderedByStock()
         {
-            throw new NotImplementedException();
+            int pageNumber = 1;
+            int pageSize = 5;
+            bool keepRunning = true;
+
+            while (keepRunning)
+            {
+                var response = await productApiClient.GetProductsOrderedByStock(pageNumber, pageSize);
+
+                ViewAllProducts(ref response, ref pageNumber, ref pageSize, ref keepRunning);
+            }
         }
 
         internal static async Task ViewProductById()
         {
-            throw new NotImplementedException();
+            await ViewAllProductsOrderedById();
+            int id = Helper.GetIntInput("Please put the id of the product");
+            var products = await productApiClient.GetProducts();
+            if(products is not null && Helper.IsProductIdCorrect(id, products))
+            {
+                var product = await productApiClient.GetProductById(id);
+                if(product is null)
+                {
+                    Console.WriteLine("Couldn't get product");
+                    return;
+                }
+                TableVisualisation.ShowProduct(product);
+            }
+            else
+            Console.WriteLine("Id is not correct");
         }
 
         internal static async Task ViewProductsByName()

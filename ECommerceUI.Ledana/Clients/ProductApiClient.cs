@@ -42,6 +42,23 @@ namespace ECommerceUI.Ledana.Clients
             }
         }
 
+        internal async Task<Product?> GetProductById(int id)
+        {
+            try
+            {
+                var response = await _client.GetFromJsonAsync<ApiResponseDto<Product>>($"https://localhost:7077/api/product/{id}");
+
+                if (response is null) return null;
+                return response.Data;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting product went wrong " + e.Message);
+                return null;
+            }
+        }
+
         internal async Task<ApiResponseDto<List<Product>>?> GetProducts(int pageNumber, int pageSize)
         {
             try
@@ -58,7 +75,7 @@ namespace ECommerceUI.Ledana.Clients
         {
             try
             {
-                var response =  await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product");
+                var response =  await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product/all");
                 if (response is null) return null;
 
                 return response.Data;
@@ -69,12 +86,13 @@ namespace ECommerceUI.Ledana.Clients
                 return null;
             }
         }
+        
 
-        internal async Task<string> UpdateProduct(ProductDto product)
+        internal async Task<string> UpdateProduct(int id, ProductUpdateDto product)
         {
             try
             {
-                var response = await _client.PutAsJsonAsync<ProductDto>($"https://localhost:7077/api/product", product);
+                var response = await _client.PutAsJsonAsync<ProductUpdateDto>($"https://localhost:7077/api/product/{id}", product);
 
                 if (response.IsSuccessStatusCode)
                     return "Product updated successfully!";
@@ -84,6 +102,31 @@ namespace ECommerceUI.Ledana.Clients
             catch (Exception e)
             {
                 return "Updating product didn't work " + e.Message;
+            }
+        }
+        internal async Task<ApiResponseDto<List<Product>>?> GetProductsOrderedByPrice(int pageNumber, int pageSize)
+        {
+            try
+            {
+                return await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?page_size={pageSize}&page_number={pageNumber}&sort_by=price");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting products went wrong " + e.Message);
+                return null;
+            }
+        }
+
+        internal async Task<ApiResponseDto<List<Product>>?> GetProductsOrderedByStock(int pageNumber, int pageSize)
+        {
+            try
+            {
+                return await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?page_size={pageSize}&page_number={pageNumber}&sort_by=stock");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting products went wrong " + e.Message);
+                return null;
             }
         }
     }

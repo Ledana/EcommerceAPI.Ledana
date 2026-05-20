@@ -44,7 +44,7 @@ namespace EcommerceAPI.Ledana.Services
 
         public async Task<ApiResponseDto<Category>> GetCategoryById(int id)
         {
-            var category = await _dbContext.Categories.FirstAsync(c => c.Id == id);
+            var category = await _dbContext.Categories.Include(c => c.Products).FirstAsync(c => c.Id == id);
 
             if (category is null) return new ApiResponseDto<Category>
             {

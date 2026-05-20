@@ -21,5 +21,18 @@ namespace ECommerceUI.Ledana
         {
             return products.Any(p => p.Id == id);
         }
+        internal static decimal GetDecimalInput(string message)
+        {
+            Console.WriteLine(message);
+            string? input = Console.ReadLine();
+            decimal num;
+            while(!decimal.TryParse(input, out num) || input is null)
+            {
+                Console.WriteLine("Invalid input, try again! Or type '0' to go back");
+                input = Console.ReadLine();
+            }
+            return num;
+        }
+            
     }
 }

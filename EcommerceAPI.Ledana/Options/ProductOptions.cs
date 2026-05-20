@@ -19,6 +19,6 @@ namespace EcommerceAPI.Ledana.Options
         [FromQuery(Name = "sort_by")]
         public string SortBy { get; set; } = "id";
         [FromQuery(Name = "sort_order")]
-        public string SortOrder { get; set; } = "DESC";
+        public string SortOrder { get; set; } = "ASC";
     }
 }

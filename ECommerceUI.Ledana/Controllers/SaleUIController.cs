@@ -1,10 +1,29 @@
-﻿namespace ECommerceUI.Ledana.Controllers
+﻿using EcommerceAPI.Ledana.DTOs;
+using ECommerceUI.Ledana.Clients;
+using ECommerceUI.Ledana.Services;
+
+namespace ECommerceUI.Ledana.Controllers
 {
-    internal class SaleController
+    //TODO add validatin in api if stock is zero and remove items from stock when added in a sale
+    //TODO show the price of  aproduct the user has choosen to add
+    //TODO show final price and products the user has chosen to put in the sale
+    internal class SaleUIController
     {
+        static SaleApiClient saleApiClient = new();
         internal static async Task AddNewSale()
         {
-            throw new NotImplementedException();
+            DateTime date = DateTime.UtcNow;
+
+            var products = await SaleUIService.GetProducts();
+            if (products is null)
+                return;
+
+            SaleDto saleDto = new()
+            {
+                Date = date,
+                SaleProducts = products
+            };
+            Console.WriteLine(await saleApiClient.CreateSale(saleDto));
         }
 
         internal static async Task ViewSalesCheaperThenPrice()

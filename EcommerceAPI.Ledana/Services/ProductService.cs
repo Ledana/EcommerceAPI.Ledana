@@ -106,7 +106,7 @@ namespace EcommerceAPI.Ledana.Services
         }
         public async Task<ApiResponseDto<Product?>> GetProductById(int id)
         {
-            var product =  await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product =  await _dbContext.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
             if (product is null) return new ApiResponseDto<Product?>
             {
                 RequestFailed = true,

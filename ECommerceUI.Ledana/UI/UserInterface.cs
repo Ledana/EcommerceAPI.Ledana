@@ -13,6 +13,7 @@ namespace ECommerceUI.Ledana.UI
             bool isRunning = true;
             while(isRunning)
             {
+                Console.Clear();
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<MainMenuOptions>()
                     .Title("What do you want to do?")
@@ -62,7 +63,7 @@ namespace ECommerceUI.Ledana.UI
                         await ViewSalesMenu();
                         break;
                     case SalesMenuOptions.AddNewSale:
-                        await SaleController.AddNewSale();
+                        await SaleUIController.AddNewSale();
                         break;;
                     case SalesMenuOptions.GoBack:
                         isRunning = false;
@@ -95,31 +96,31 @@ namespace ECommerceUI.Ledana.UI
                 switch (option)
                 {
                     case ViewSalesMenuOptions.ViewSalesOrderedByDate:
-                        await SaleController.ViewSalesOrderedByDate();
+                        await SaleUIController.ViewSalesOrderedByDate();
                         break;
                     case ViewSalesMenuOptions.ViewSalesOrderedByTotalPrice:
-                        await SaleController.ViewSalesOrderedByTotalPrice();
+                        await SaleUIController.ViewSalesOrderedByTotalPrice();
                         break;
                     case ViewSalesMenuOptions.ViewSaleWithId:
-                        await SaleController.ViewSaleWithId();
+                        await SaleUIController.ViewSaleWithId();
                         break;
                     case ViewSalesMenuOptions.ViewSalesWithProductName:
-                        await SaleController.ViewSalesWithProductName();
+                        await SaleUIController.ViewSalesWithProductName();
                         break;
                     case ViewSalesMenuOptions.ViewSalesWithCategoryName:
-                        await SaleController.ViewSalesWithCategoryName();
+                        await SaleUIController.ViewSalesWithCategoryName();
                         break;
                     case ViewSalesMenuOptions.ViewSalesWithDate:
-                        await SaleController.ViewSalesWithDate();
+                        await SaleUIController.ViewSalesWithDate();
                         break;
                     case ViewSalesMenuOptions.ViewSalesWithTotalPrice:
-                        await SaleController.ViewSalesWithTotalPrice();
+                        await SaleUIController.ViewSalesWithTotalPrice();
                         break;
                     case ViewSalesMenuOptions.ViewSalesCheaperThenPrice:
-                        await SaleController.ViewSalesCheaperThenPrice();
+                        await SaleUIController.ViewSalesCheaperThenPrice();
                         break;
                     case ViewSalesMenuOptions.ViewSalesNewerThenDate:
-                        SaleController.ViewSalesNewerThenDate();
+                        await SaleUIController.ViewSalesNewerThenDate();
                         break;
                     case ViewSalesMenuOptions.GoBack:
                         isRunning = false;
@@ -148,19 +149,19 @@ namespace ECommerceUI.Ledana.UI
                 switch (option)
                 {
                     case CategoriesMenuOptions.ViewCategories:
-                        await CategoryController.ViewCategories();
+                        await CategoryUIController.ViewCategories();
                         break;
                     case CategoriesMenuOptions.ViewCategoryById:
-                        await CategoryController.ViewCategoryById();
+                        await CategoryUIController.ViewCategoryById();
                         break;
                     case CategoriesMenuOptions.AddNewCategory:
-                        await CategoryController.AddNewCategory();
+                        await CategoryUIController.AddNewCategory();
                         break;
                     case CategoriesMenuOptions.UpdateCategory:
-                        await CategoryController.UpdateCategory();
+                        await CategoryUIController.UpdateCategory();
                         break;
                     case CategoriesMenuOptions.DeleteCategory:
-                        await CategoryController.DeleteCategory();
+                        await CategoryUIController.DeleteCategory();
                         break;
                     case CategoriesMenuOptions.GoBack:
                         isRunning = false;
@@ -191,13 +192,13 @@ namespace ECommerceUI.Ledana.UI
                         await ViewProductsMenu();
                         break;
                     case ProductsMenuOptions.AddNewProduct:
-                        await ProductController.AddNewProduct();
+                        await ProductUIController.AddNewProduct();
                         break;
                     case ProductsMenuOptions.UpdateProduct:
-                        await ProductController.UpdateProduct();
+                        await ProductUIController.UpdateProduct();
                         break;
                     case ProductsMenuOptions.DeleteProduct:
-                        await ProductController.DeleteProduct();
+                        await ProductUIController.DeleteProduct();
                         break;
                     case ProductsMenuOptions.GoBack:
                         isRunning = false;
@@ -231,34 +232,34 @@ namespace ECommerceUI.Ledana.UI
                 switch (option)
                 {
                     case ViewProductsMenuOptions.ViewAllProductsOrderedById:
-                        await ProductController.ViewAllProductsOrderedById();
+                        await ProductUIController.ViewAllProductsOrderedById();
                         break;
                     case ViewProductsMenuOptions.ViewAllProductsOrderedByName:
-                        await ProductController.ViewAllProductsOrderedByName();
+                        await ProductUIController.ViewAllProductsOrderedByName();
                         break;
                     case ViewProductsMenuOptions.ViewAllProductsOrderedByPrice:
-                        await ProductController.ViewAllProductsOrderedByPrice();
+                        await ProductUIController.ViewAllProductsOrderedByPrice();
                         break;
                     case ViewProductsMenuOptions.ViewAllProductsOrderedByStock:
-                        await ProductController.ViewAllProductsOrderedByStock();
+                        await ProductUIController.ViewAllProductsOrderedByStock();
                         break;
                     case ViewProductsMenuOptions.ViewProductById:
-                        await ProductController.ViewProductById();
+                        await ProductUIController.ViewProductById();
                         break;
                     case ViewProductsMenuOptions.ViewProductsByName:
-                        await ProductController.ViewProductsByName();
+                        await ProductUIController.ViewProductsByName();
                         break;
                     case ViewProductsMenuOptions.ViewProductsByPrice:
-                        await ProductController.ViewProductsByPrice();
+                        await ProductUIController.ViewProductsByPrice();
                         break;
                     case ViewProductsMenuOptions.ViewProductsByStock:
-                        await ProductController.ViewProductsByStock();
+                        await ProductUIController.ViewProductsByStock();
                         break;
                     case ViewProductsMenuOptions.ViewProductsCheaperThenPrice:
-                        await ProductController.ViewProductsCheaperThenPrice();
+                        await ProductUIController.ViewProductsCheaperThenPrice();
                         break;
                     case ViewProductsMenuOptions.ViewProductsLowerThenStock:
-                        await ProductController.ViewProductsLowerThenStock();
+                        await ProductUIController.ViewProductsLowerThenStock();
                         break;
                     case ViewProductsMenuOptions.GoBack:
                         isRunning = false;
