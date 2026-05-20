@@ -15,6 +15,7 @@ namespace ECommerceUI.Ledana.Services
             int quantity = 0;
             decimal discount = 0m;
             decimal price = 0m;
+            decimal totalPrice = 0m;
             var products = await productApiClient.GetProducts();
             if(products is null)
             {
@@ -32,7 +33,7 @@ namespace ECommerceUI.Ledana.Services
                     Console.WriteLine("Your chosen product is not found");
                     return null;
                 }
-
+                Console.WriteLine("\nPrice for product is " + product.Price);
                 if (Helper.IsProductIdCorrect(productId, products))
                 {
                     quantity = Helper.GetIntInput("Please put the quantity");
@@ -49,12 +50,13 @@ namespace ECommerceUI.Ledana.Services
                 {
                     ProductsId = productId,
                     Quantity = quantity,
-                    Discount = discount,
-                    UnitPriceAtSale = price
+                    Discount = discount
                 };
                 saleProducts.Add(productDto);
+                totalPrice += product.Price * (1 - discount);
                 isRunning = AnsiConsole.Confirm("Do you want to add a product");
             }
+            Console.WriteLine("\nTotal price is " + totalPrice);
 
             return saleProducts;
         }

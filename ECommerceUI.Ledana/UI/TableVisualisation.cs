@@ -87,5 +87,48 @@ Price: {product.Price}")
             }
             AnsiConsole.Write(table);
         }
+
+        internal static void ShowSale(SaleProductViewDto sale)
+        {
+            var panel = new Panel($@"Sale Id: {sale.SaleId}
+Date: {sale.Date}
+Total Products: {sale.Products.Sum(p => p.Quantity)}
+Total Price: {sale.TotalPrice}"
+
+                )
+            {
+                Header = new PanelHeader("Sale's info"),
+                Padding = new Padding(2, 2, 2, 2)
+            };
+
+            var table = new Table().ShowRowSeparators();
+            table.AddColumn("Product Name");
+            table.AddColumn("Category Name");
+            table.AddColumn("Quantity");
+            table.AddColumn("Discount");
+            table.AddColumn("Product Final Price");
+
+            foreach (var product in sale.Products)
+            {
+                table.AddRow(product.ProductName, product.CategoryName, product.Quantity.ToString(), product.Discount.ToString(), product.TotalPrice.ToString());
+            }
+            AnsiConsole.Write(panel);
+            AnsiConsole.Write(table);
+        }
+
+        internal static void ShowSales(List<SaleProductViewDto> data)
+        {
+            var table = new Table().ShowRowSeparators();
+            table.AddColumn("Sale Id");
+            table.AddColumn("Date");
+            table.AddColumn("Total Products");
+            table.AddColumn("Total Price");
+
+            foreach (var item in data)
+            {
+                table.AddRow(item.SaleId.ToString(), item.Date.ToString(), item.Products.Count.ToString(), item.TotalPrice.ToString());
+            }
+            AnsiConsole.Write(table);
+        }
     }
 }

@@ -1,11 +1,14 @@
-﻿using EcommerceAPI.Ledana.DTOs;
+﻿using Azure;
+using EcommerceAPI.Ledana.DTOs;
 using ECommerceUI.Ledana.Clients;
 using ECommerceUI.Ledana.Services;
+using ECommerceUI.Ledana.UI;
+using Spectre.Console;
 
 namespace ECommerceUI.Ledana.Controllers
 {
-    //TODO add validatin in api if stock is zero and remove items from stock when added in a sale
-    //TODO show the price of  aproduct the user has choosen to add
+    //TODO add validation in api if stock is zero and remove items from stock when added in a sale
+    //TODO show the price of a product the user has chosen to add
     //TODO show final price and products the user has chosen to put in the sale
     internal class SaleUIController
     {
@@ -26,6 +29,44 @@ namespace ECommerceUI.Ledana.Controllers
             Console.WriteLine(await saleApiClient.CreateSale(saleDto));
         }
 
+        internal static void ViewAllSales(ref ApiResponseDto<List<SaleProductViewDto>> response, ref int pageNumber, ref int pageSize, ref bool keepRunning)
+        {
+            if (response?.Data == null || response.Data.Count == 0) { Console.WriteLine("No sales found!"); return; }
+
+            Console.Clear();
+
+            TableVisualisation.ShowSales(response.Data);
+            Console.WriteLine($"Total count: {response.TotalCount}");
+            Console.WriteLine($"Current page: {response.CurrentPage}");
+            Console.WriteLine($"Page size: {response.PageSize}");
+            Console.WriteLine($"Has next: {response.HasNext}");
+            Console.WriteLine($"Has previous: {response.HasPrevious}");
+
+            var choice = AnsiConsole.Prompt(new SelectionPrompt<string>()
+                .AddChoices("Next", "Previous", "First", "Last", "Go Back"));
+
+            switch (choice)
+            {
+                case "Next":
+                    if (!response.HasNext) return;
+                    pageNumber++;
+                    break;
+                case "Previous":
+                    if (!response.HasPrevious) return;
+                    if (pageNumber > 1) pageNumber--;
+                    break;
+                case "First":
+                    pageNumber = 1;
+                    break;
+                case "Last":
+                    pageNumber = response.TotalCount % pageSize == 0 ? response.TotalCount / pageSize : response.TotalCount / pageSize + 1;
+                    break;
+                case "Go Back":
+                    keepRunning = false;
+                    break;
+            }
+        }
+
         internal static async Task ViewSalesCheaperThenPrice()
         {
             throw new NotImplementedException();
@@ -38,7 +79,21 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewSalesOrderedByDate()
         {
-            throw new NotImplementedException();
+            int pageNumber = 1;
+            int pageSize = 5;
+            bool keepRunning = true;
+
+            while (keepRunning)
+            {
+                var response = await saleApiClient.GetSalesSortedByDate(pageNumber, pageSize);
+                if (response is null)
+                {
+                    Console.WriteLine("Couldn't get sales");
+                    return;
+                }
+
+                ViewAllSales(ref response, ref pageNumber, ref pageSize, ref keepRunning);
+            }
         }
 
         internal static async Task ViewSalesOrderedByTotalPrice()
@@ -68,7 +123,18 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewSaleWithId()
         {
-            throw new NotImplementedException();
+            await ViewSalesOrderedByDate();
+            int categoryId = Helper.GetIntInput("Please put the id of the sale you want to view");
+            if (categoryId == 0) return;
+
+            var sale = await saleApiClient.GetSaleById(categoryId);
+            if (sale is null)
+            {
+                Console.WriteLine("Couldn't get the sale");
+                return;
+            }
+
+            TableVisualisation.ShowSale(sale);
         }
     }
 }

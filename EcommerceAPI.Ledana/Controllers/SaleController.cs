@@ -27,7 +27,7 @@ namespace EcommerceAPI.Ledana.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponseDto<Sale>>> Get(int id)
+        public async Task<ActionResult<ApiResponseDto<SaleProductViewDto>>> Get(int id)
         {
             ApiResponseDto<SaleProductViewDto> response = await _saleService.GetSaleById(id);
 

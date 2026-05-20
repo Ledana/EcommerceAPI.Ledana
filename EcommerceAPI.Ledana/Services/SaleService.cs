@@ -24,6 +24,26 @@ namespace EcommerceAPI.Ledana.Services
         {
             var newSale = _mapper.Map<Sale>(sale);
 
+            foreach (var sp in newSale.SaleProducts)
+            {
+                var product = await _dbContext.Products.FindAsync(sp.ProductsId);
+                if (product is null)
+                    return new()
+                    {
+                        RequestFailed = true,
+                        ErrorMessage = $"Product with ID {sp.ProductsId} not found",
+                        ResponseCode = HttpStatusCode.BadRequest
+                    };
+                if (sp.Quantity > product.Stock)
+                    return new()
+                    {
+                        RequestFailed = true,
+                        ErrorMessage = "Amount is bigger than stock",
+                        ResponseCode = HttpStatusCode.BadRequest
+                    };
+                sp.Product = product;
+            }
+
             var response = await _dbContext.Sales
                 .AddAsync(newSale);
 
@@ -132,6 +152,7 @@ namespace EcommerceAPI.Ledana.Services
             var sale = await _dbContext.Sales.IgnoreQueryFilters()
                 .Include(s => s.SaleProducts)
                     .ThenInclude(sp => sp.Product)
+                    .ThenInclude(p => p.Category)
                 .Select(s => new SaleProductViewDto
                 {
                     SaleId = s.Id,
@@ -140,12 +161,13 @@ namespace EcommerceAPI.Ledana.Services
                     Products = s.SaleProducts.Select(sp => new SaleProductListDto
                     {
                         ProductName = sp.Product.Name,
+                        CategoryName = sp.Product.Category.Name,
                         Quantity = sp.Quantity,
                         UnitPriceAtSale = sp.UnitPriceAtSale,
                         Discount = sp.Discount,
                         TotalPrice = sp.TotalPrice
                     }).ToList()
-                }).FirstAsync(s => s.SaleId == id);
+                }).FirstAsync(s => s.SaleId == id);;
 
             if (sale is null) return new()
             {

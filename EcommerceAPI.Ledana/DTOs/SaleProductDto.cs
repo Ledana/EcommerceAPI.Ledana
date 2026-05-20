@@ -12,8 +12,8 @@ namespace EcommerceAPI.Ledana.DTOs
         public int? Quantity { get; set; }
         [Required]
         public decimal? Discount { get; set; }
-        [Required]
-        public decimal? UnitPriceAtSale { get; set; }
+        //[Required]
+        //public decimal? UnitPriceAtSale { get; set; }
     }
     //dto for saleproduct to get in sale
     public class SaleProductListDto
