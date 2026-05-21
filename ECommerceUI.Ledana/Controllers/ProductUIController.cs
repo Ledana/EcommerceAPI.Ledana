@@ -166,11 +166,6 @@ namespace ECommerceUI.Ledana.Controllers
             }
         }
 
-        internal static async Task ViewAllProductsOrderedByName()
-        {
-            throw new NotImplementedException();
-        }
-
         internal static async Task ViewAllProductsOrderedByPrice()
         {
             int pageNumber = 1;
@@ -220,27 +215,43 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewProductsByName()
         {
-            throw new NotImplementedException();
-        }
+            string name = ProductUIService.GetProductName("Please put the name of product you want to view");
+            List<Product>? products = await productApiClient.GetProductsWithName(name);
 
-        internal static async Task ViewProductsByPrice()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static async Task ViewProductsByStock()
-        {
-            throw new NotImplementedException();
+            if(products is null || products.Count == 0)
+            {
+                Console.WriteLine("No products found");
+                return;
+            }
+            TableVisualisation.ShowAllProducts(products);
         }
 
         internal static async Task ViewProductsCheaperThenPrice()
         {
-            throw new NotImplementedException();
+            decimal price = Helper.GetDecimalInput("Please put the price you want to view products");
+
+            List<Product>? products = await productApiClient.GetProductsCheaperThenPrice(price);
+
+            if(products is null || products.Count == 0)
+            {
+                Console.WriteLine("No products found");
+                return;
+            }
+            TableVisualisation.ShowAllProducts(products);
         }
 
         internal static async Task ViewProductsLowerThenStock()
         {
-            throw new NotImplementedException();
+            int stock = Helper.GetIntInput("PLease put the stock you want to view products");
+
+            List<Product>? products = await productApiClient.ViewProductsLowerThenStock(stock);
+
+            if (products is null || products.Count == 0)
+            {
+                Console.WriteLine("No products found");
+                return;
+            }
+            TableVisualisation.ShowAllProducts(products);
         }
     }
 }

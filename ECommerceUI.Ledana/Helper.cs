@@ -1,4 +1,5 @@
 ﻿using EcommerceAPI.Ledana.Models;
+using System.Globalization;
 
 namespace ECommerceUI.Ledana
 {
@@ -33,6 +34,6 @@ namespace ECommerceUI.Ledana
             }
             return num;
         }
-            
+
     }
 }

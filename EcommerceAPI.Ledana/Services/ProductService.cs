@@ -34,9 +34,9 @@ namespace EcommerceAPI.Ledana.Services
             if (productOptions.Category is not null)
                 query = query.Where(p => p.Category.Name == productOptions.Category);
             if (productOptions.Price is not null)
-                query = query.Where(p => p.Price == productOptions.Price);
+                query = query.Where(p => p.Price <= productOptions.Price);
             if (productOptions.Stock is not null)
-                query = query.Where(p => p.Stock == productOptions.Stock);
+                query = query.Where(p => p.Stock <= productOptions.Stock);
 
             if(productOptions.SortBy == "id" || !string.IsNullOrEmpty(productOptions.SortBy))
             {

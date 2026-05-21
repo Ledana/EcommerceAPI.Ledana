@@ -69,13 +69,17 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewSalesCheaperThenPrice()
         {
-            throw new NotImplementedException();
+            decimal price = Helper.GetDecimalInput("Please put the price you want to view");
+            var sales = await saleApiClient.GetSalesCheaperThenPrice(price);
+            if (sales is null || sales.Count == 0)
+            {
+                Console.WriteLine("No sales found");
+                return;
+            }
+
+            TableVisualisation.ShowSales(sales);
         }
 
-        internal static async Task ViewSalesNewerThenDate()
-        {
-            throw new NotImplementedException();
-        }
 
         internal static async Task ViewSalesOrderedByDate()
         {
@@ -98,28 +102,50 @@ namespace ECommerceUI.Ledana.Controllers
 
         internal static async Task ViewSalesOrderedByTotalPrice()
         {
-            throw new NotImplementedException();
+            int pageNumber = 1;
+            int pageSize = 5;
+            bool keepRunning = true;
+
+            while (keepRunning)
+            {
+                var response = await saleApiClient.GetSalesSortedByTotalPrice(pageNumber, pageSize);
+                if (response is null)
+                {
+                    Console.WriteLine("Couldn't get sales");
+                    return;
+                }
+
+                ViewAllSales(ref response, ref pageNumber, ref pageSize, ref keepRunning);
+            }
         }
 
         internal static async Task ViewSalesWithCategoryName()
         {
-            throw new NotImplementedException();
+            string name = ProductUIService.GetProductName("Please put the name of category you want to view sales on");
+            var sales = await saleApiClient.GetSalesWithCategoryName(name);
+            if (sales is null || sales.Count == 0)
+            {
+                Console.WriteLine("No sales found");
+                return;
+            }
+
+            TableVisualisation.ShowSales(sales);
         }
 
-        internal static async Task ViewSalesWithDate()
-        {
-            throw new NotImplementedException();
-        }
 
         internal static async Task ViewSalesWithProductName()
         {
-            throw new NotImplementedException();
+            string name = ProductUIService.GetProductName("Please put the name of product you want to view sales on");
+            var sales = await saleApiClient.GetSalesWithProductName(name);
+            if (sales is null || sales.Count == 0)
+            {
+                Console.WriteLine("No sales found");
+                return;
+            }
+
+            TableVisualisation.ShowSales(sales);
         }
 
-        internal static async Task ViewSalesWithTotalPrice()
-        {
-            throw new NotImplementedException();
-        }
 
         internal static async Task ViewSaleWithId()
         {
@@ -130,7 +156,7 @@ namespace ECommerceUI.Ledana.Controllers
             var sale = await saleApiClient.GetSaleById(categoryId);
             if (sale is null)
             {
-                Console.WriteLine("Couldn't get the sale");
+                Console.WriteLine("No sale found");
                 return;
             }
 

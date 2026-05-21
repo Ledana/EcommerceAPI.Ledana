@@ -94,7 +94,7 @@ namespace EcommerceAPI.Ledana.Services
             if (saleOptions.CategoryName is not null)
                 query = query.Where(s => s.Products.Any(p => p.CategoryName == saleOptions.CategoryName));
             if (saleOptions.TotalPrice is not null)
-                query = query.Where(s => s.Products.Any(p => p.TotalPrice == saleOptions.TotalPrice));
+                query = query.Where(s => s.TotalPrice <= saleOptions.TotalPrice);
             if (saleOptions.Date.HasValue)
                 query = query.Where(s => s.Date <= saleOptions.Date);
 

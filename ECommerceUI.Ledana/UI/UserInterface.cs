@@ -86,10 +86,7 @@ namespace ECommerceUI.Ledana.UI
                         ViewSalesMenuOptions.ViewSaleWithId,
                         ViewSalesMenuOptions.ViewSalesWithProductName,
                         ViewSalesMenuOptions.ViewSalesWithCategoryName,
-                        ViewSalesMenuOptions.ViewSalesWithDate,
-                        ViewSalesMenuOptions.ViewSalesWithTotalPrice,
                         ViewSalesMenuOptions.ViewSalesCheaperThenPrice,
-                        ViewSalesMenuOptions.ViewSalesNewerThenDate,
                         ViewSalesMenuOptions.GoBack
                     ));
 
@@ -110,18 +107,11 @@ namespace ECommerceUI.Ledana.UI
                     case ViewSalesMenuOptions.ViewSalesWithCategoryName:
                         await SaleUIController.ViewSalesWithCategoryName();
                         break;
-                    case ViewSalesMenuOptions.ViewSalesWithDate:
-                        await SaleUIController.ViewSalesWithDate();
-                        break;
-                    case ViewSalesMenuOptions.ViewSalesWithTotalPrice:
-                        await SaleUIController.ViewSalesWithTotalPrice();
-                        break;
+                    
                     case ViewSalesMenuOptions.ViewSalesCheaperThenPrice:
                         await SaleUIController.ViewSalesCheaperThenPrice();
                         break;
-                    case ViewSalesMenuOptions.ViewSalesNewerThenDate:
-                        await SaleUIController.ViewSalesNewerThenDate();
-                        break;
+                    
                     case ViewSalesMenuOptions.GoBack:
                         isRunning = false;
                         break;
@@ -221,9 +211,6 @@ namespace ECommerceUI.Ledana.UI
                         ViewProductsMenuOptions.ViewAllProductsOrderedByPrice,
                         ViewProductsMenuOptions.ViewAllProductsOrderedByStock,
                         ViewProductsMenuOptions.ViewProductById,
-                        ViewProductsMenuOptions.ViewProductsByName,
-                        ViewProductsMenuOptions.ViewProductsByPrice,
-                        ViewProductsMenuOptions.ViewProductsByStock,
                         ViewProductsMenuOptions.ViewProductsCheaperThenPrice,
                         ViewProductsMenuOptions.ViewProductsLowerThenStock,
                         ViewProductsMenuOptions.GoBack
@@ -233,9 +220,6 @@ namespace ECommerceUI.Ledana.UI
                 {
                     case ViewProductsMenuOptions.ViewAllProductsOrderedById:
                         await ProductUIController.ViewAllProductsOrderedById();
-                        break;
-                    case ViewProductsMenuOptions.ViewAllProductsOrderedByName:
-                        await ProductUIController.ViewAllProductsOrderedByName();
                         break;
                     case ViewProductsMenuOptions.ViewAllProductsOrderedByPrice:
                         await ProductUIController.ViewAllProductsOrderedByPrice();
@@ -248,12 +232,6 @@ namespace ECommerceUI.Ledana.UI
                         break;
                     case ViewProductsMenuOptions.ViewProductsByName:
                         await ProductUIController.ViewProductsByName();
-                        break;
-                    case ViewProductsMenuOptions.ViewProductsByPrice:
-                        await ProductUIController.ViewProductsByPrice();
-                        break;
-                    case ViewProductsMenuOptions.ViewProductsByStock:
-                        await ProductUIController.ViewProductsByStock();
                         break;
                     case ViewProductsMenuOptions.ViewProductsCheaperThenPrice:
                         await ProductUIController.ViewProductsCheaperThenPrice();

@@ -126,7 +126,7 @@ Total Price: {sale.TotalPrice}"
 
             foreach (var item in data)
             {
-                table.AddRow(item.SaleId.ToString(), item.Date.ToString(), item.Products.Count.ToString(), item.TotalPrice.ToString());
+                table.AddRow(item.SaleId.ToString(), item.Date.ToString(), item.Products.Sum(p => p.Quantity).ToString(), item.TotalPrice.ToString());
             }
             AnsiConsole.Write(table);
         }

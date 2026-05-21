@@ -129,5 +129,56 @@ namespace ECommerceUI.Ledana.Clients
                 return null;
             }
         }
+
+        internal async Task<List<Product>?> GetProductsWithName(string name)
+        {
+            try
+            {
+                var response = await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?name={name}");
+
+                if (response is null) return null;
+                return response.Data;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting product went wrong " + e.Message);
+                return null;
+            }
+        }
+
+        internal async Task<List<Product>?> GetProductsCheaperThenPrice(decimal price)
+        {
+            try
+            {
+                var response = await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?price={price}");
+
+                if (response is null) return null;
+                return response.Data;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting product went wrong " + e.Message);
+                return null;
+            }
+        }
+
+        internal async Task<List<Product>?> ViewProductsLowerThenStock(int stock)
+        {
+            try
+            {
+                var response = await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?stock={stock}");
+
+                if (response is null) return null;
+                return response.Data;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Getting product went wrong " + e.Message);
+                return null;
+            }
+        }
     }
 }
