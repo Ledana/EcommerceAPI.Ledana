@@ -207,10 +207,10 @@ namespace ECommerceUI.Ledana.UI
                     .Title("What do you want to do?")
                     .AddChoices(
                         ViewProductsMenuOptions.ViewAllProductsOrderedById,
-                        ViewProductsMenuOptions.ViewAllProductsOrderedByName,
                         ViewProductsMenuOptions.ViewAllProductsOrderedByPrice,
                         ViewProductsMenuOptions.ViewAllProductsOrderedByStock,
                         ViewProductsMenuOptions.ViewProductById,
+                        ViewProductsMenuOptions.ViewProductsByName,
                         ViewProductsMenuOptions.ViewProductsCheaperThenPrice,
                         ViewProductsMenuOptions.ViewProductsLowerThenStock,
                         ViewProductsMenuOptions.GoBack

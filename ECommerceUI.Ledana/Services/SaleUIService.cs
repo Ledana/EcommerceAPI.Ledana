@@ -12,9 +12,8 @@ namespace ECommerceUI.Ledana.Services
         {
             bool isRunning = AnsiConsole.Confirm("Do you want to add a product");
             List<SaleProductDto> saleProducts = [];
-            int quantity = 0;
-            decimal discount = 0m;
-            decimal price = 0m;
+            int quantity;
+            decimal discount;
             decimal totalPrice = 0m;
             var products = await productApiClient.GetProducts();
             if(products is null)
@@ -33,12 +32,19 @@ namespace ECommerceUI.Ledana.Services
                     Console.WriteLine("Your chosen product is not found");
                     return null;
                 }
-                Console.WriteLine("\nPrice for product is " + product.Price);
+                
                 if (Helper.IsProductIdCorrect(productId, products))
                 {
+                    Console.WriteLine("\nPrice for product is " + product.Price);
                     quantity = Helper.GetIntInput("Please put the quantity");
+                    while (quantity > product.Stock)
+                    {
+                        Console.WriteLine("Quantity is greater than stock of product");
+                        quantity = Helper.GetIntInput("Please put the quantity");
+                    }
+                    if (quantity == 0) return [];
+
                     discount = Helper.GetDecimalInput("Please put the discount");
-                    price = product.Price;
                 }
                 else
                 {
@@ -54,7 +60,8 @@ namespace ECommerceUI.Ledana.Services
                 };
                 saleProducts.Add(productDto);
                 totalPrice += product.Price * (1 - discount);
-                isRunning = AnsiConsole.Confirm("Do you want to add a product");
+                Console.WriteLine("Your total for now is " + totalPrice);
+                isRunning = AnsiConsole.Confirm("Do you want to add a product?");
             }
             Console.WriteLine("\nTotal price is " + totalPrice);
 

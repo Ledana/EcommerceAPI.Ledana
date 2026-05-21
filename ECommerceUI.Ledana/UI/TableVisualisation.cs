@@ -105,12 +105,13 @@ Total Price: {sale.TotalPrice}"
             table.AddColumn("Product Name");
             table.AddColumn("Category Name");
             table.AddColumn("Quantity");
+            table.AddColumn("Unit Price at Sale");
             table.AddColumn("Discount");
             table.AddColumn("Product Final Price");
 
             foreach (var product in sale.Products)
             {
-                table.AddRow(product.ProductName, product.CategoryName, product.Quantity.ToString(), product.Discount.ToString(), product.TotalPrice.ToString());
+                table.AddRow(product.ProductName, product.CategoryName, product.Quantity.ToString(), product.UnitPriceAtSale.ToString(), product.Discount.ToString(), product.TotalPrice.ToString());
             }
             AnsiConsole.Write(panel);
             AnsiConsole.Write(table);

@@ -16,9 +16,9 @@ namespace ECommerceUI.Ledana.Clients
                 var response = await httpClient.PostAsJsonAsync("https://localhost:7077/api/sale", saleDto);
 
                 var content =  await response.Content.ReadFromJsonAsync<ApiResponseDto<Sale>>();
-                if (content is null) return "Couldn't add the sale";
+                if (content is null) return content.ErrorMessage;
 
-                return content.ErrorMessage;
+                return "Sale added successfully!";
             }
             catch (Exception e)
             {

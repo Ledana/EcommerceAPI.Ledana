@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EcommerceAPI.Ledana.DTOs
 {
@@ -12,8 +13,8 @@ namespace EcommerceAPI.Ledana.DTOs
         public int? Quantity { get; set; }
         [Required]
         public decimal? Discount { get; set; }
-        //[Required]
-        //public decimal? UnitPriceAtSale { get; set; }
+
+
     }
     //dto for saleproduct to get in sale
     public class SaleProductListDto
@@ -32,6 +33,6 @@ namespace EcommerceAPI.Ledana.DTOs
         public int SaleId { get; set; }
         public DateTime Date { get; set; }
         public List<SaleProductListDto> Products { get; set; } = [];
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; } //= Products.Sum(p => p.TotalPrice);
     }
 }

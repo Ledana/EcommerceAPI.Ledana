@@ -20,14 +20,11 @@
         public enum ViewProductsMenuOptions
         {
             ViewAllProductsOrderedById,
-            ViewAllProductsOrderedByName,
             ViewAllProductsOrderedByPrice,
             ViewAllProductsOrderedByStock,
             ViewProductById,
             ViewProductsByName,
-            ViewProductsByPrice,
             ViewProductsCheaperThenPrice,
-            ViewProductsByStock,
             ViewProductsLowerThenStock,
             GoBack
         }
@@ -55,8 +52,6 @@
             ViewSalesWithCategoryName,
             ViewSalesWithTotalPrice,
             ViewSalesCheaperThenPrice,
-            ViewSalesWithDate,
-            ViewSalesNewerThenDate,
             GoBack
         }
     }

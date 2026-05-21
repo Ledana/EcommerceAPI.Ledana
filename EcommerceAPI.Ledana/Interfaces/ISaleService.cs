@@ -8,6 +8,7 @@ namespace EcommerceAPI.Ledana.Interfaces
     {
         Task<ApiResponseDto<Sale>> CreateSale(SaleDto sale);
         Task<ApiResponseDto<List<SaleProductViewDto>>> GetAllSales(SaleOptions saleOptions);
+        Task<ApiResponseDto<List<SaleProductViewDto>>> GetAllSales();
         Task<ApiResponseDto<SaleProductViewDto>> GetSaleById(int id);
     }
 }

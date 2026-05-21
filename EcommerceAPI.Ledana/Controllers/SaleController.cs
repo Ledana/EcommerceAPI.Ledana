@@ -24,7 +24,14 @@ namespace EcommerceAPI.Ledana.Controllers
             if (response is null) return BadRequest();
             return Ok(response);
         }
+        [HttpGet("all")]
+        public async Task<ActionResult<ApiResponseDto<List<SaleProductViewDto>>>> Get()
+        {
+            var response = await _saleService.GetAllSales();
 
+            if (response is null) return BadRequest();
+            return Ok(response);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponseDto<SaleProductViewDto>>> Get(int id)

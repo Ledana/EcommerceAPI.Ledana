@@ -134,7 +134,7 @@ namespace ECommerceUI.Ledana.Clients
         {
             try
             {
-                var response = await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?name={name}");
+                var response = await _client.GetFromJsonAsync<ApiResponseDto<List<Product>>>($"https://localhost:7077/api/product?name={name.Trim()}");
 
                 if (response is null) return null;
                 return response.Data;

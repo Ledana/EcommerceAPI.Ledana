@@ -1,5 +1,4 @@
-﻿using Azure;
-using EcommerceAPI.Ledana.DTOs;
+﻿using EcommerceAPI.Ledana.DTOs;
 using ECommerceUI.Ledana.Clients;
 using ECommerceUI.Ledana.Services;
 using ECommerceUI.Ledana.UI;
@@ -7,9 +6,6 @@ using Spectre.Console;
 
 namespace ECommerceUI.Ledana.Controllers
 {
-    //TODO add validation in api if stock is zero and remove items from stock when added in a sale
-    //TODO show the price of a product the user has chosen to add
-    //TODO show final price and products the user has chosen to put in the sale
     internal class SaleUIController
     {
         static SaleApiClient saleApiClient = new();
@@ -18,8 +14,11 @@ namespace ECommerceUI.Ledana.Controllers
             DateTime date = DateTime.UtcNow;
 
             var products = await SaleUIService.GetProducts();
-            if (products is null)
+            if (products is null || products.Count == 0)
+            {
+                Console.WriteLine("Your products can not be added to a new sale");
                 return;
+            }
 
             SaleDto saleDto = new()
             {

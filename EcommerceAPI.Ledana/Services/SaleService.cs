@@ -6,6 +6,7 @@ using EcommerceAPI.Ledana.Models;
 using EcommerceAPI.Ledana.Options;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Xml.Linq;
 
 namespace EcommerceAPI.Ledana.Services
 {
@@ -22,26 +23,34 @@ namespace EcommerceAPI.Ledana.Services
 
         public async Task<ApiResponseDto<Sale>> CreateSale(SaleDto sale)
         {
+            
             var newSale = _mapper.Map<Sale>(sale);
+            
 
-            foreach (var sp in newSale.SaleProducts)
+            foreach (var item in newSale.SaleProducts)
             {
-                var product = await _dbContext.Products.FindAsync(sp.ProductsId);
-                if (product is null)
-                    return new()
-                    {
-                        RequestFailed = true,
-                        ErrorMessage = $"Product with ID {sp.ProductsId} not found",
-                        ResponseCode = HttpStatusCode.BadRequest
-                    };
-                if (sp.Quantity > product.Stock)
+                var product = await _dbContext.Products.FindAsync(item.ProductsId);
+
+                if (product is null) return new()
+                {
+                    RequestFailed = true,
+                    ErrorMessage = $"Product with ID {item.ProductsId} not found",
+                    ResponseCode = HttpStatusCode.BadRequest
+                };
+
+                //saving for each product added in sale its price to unit price at sale for saleproduct
+                item.UnitPriceAtSale = product.Price;
+
+                //checking if quanity is bigger then stock
+                if (item.Quantity > product.Stock)
                     return new()
                     {
                         RequestFailed = true,
                         ErrorMessage = "Amount is bigger than stock",
                         ResponseCode = HttpStatusCode.BadRequest
                     };
-                sp.Product = product;
+                //removing the quantity of products bought from stock of product
+                product.Stock -= item.Quantity;
             }
 
             var response = await _dbContext.Sales
@@ -62,7 +71,47 @@ namespace EcommerceAPI.Ledana.Services
                 ResponseCode = HttpStatusCode.OK
             };
         }
+        public async Task<ApiResponseDto<List<SaleProductViewDto>>> GetAllSales()
+        {
+            var query = _dbContext.Sales
+               .IgnoreQueryFilters()
+               .Include(s => s.SaleProducts).ThenInclude(sp => sp.Product)
+               .ThenInclude(p => p.Category)
+               .Select(s => new SaleProductViewDto
+               {
+                   SaleId = s.Id,
+                   Date = s.Date,
+                   TotalPrice = s.SaleProducts.Sum(sp => sp.TotalPrice),
+                   Products = s.SaleProducts.Select(sp => new SaleProductListDto
+                   {
+                       ProductName = sp.Product.Name,
+                       CategoryName = sp.Product.Category.Name,
+                       Quantity = sp.Quantity,
+                       UnitPriceAtSale = sp.UnitPriceAtSale,
+                       Discount = sp.Discount,
+                       TotalPrice = sp.TotalPrice
+                   }).ToList()
+               })
+               .AsQueryable();
 
+            List<SaleProductViewDto>? sales;
+
+            sales = await query.ToListAsync();
+
+            if (sales is null) return new()
+            {
+                RequestFailed = true,
+                ErrorMessage = "Couldn't fetch the sales",
+                Data = null,
+                ResponseCode = HttpStatusCode.BadRequest
+            };
+
+            return new ApiResponseDto<List<SaleProductViewDto>>()
+            {
+                Data = sales,
+                ResponseCode = HttpStatusCode.OK
+            };
+        }
         public async Task<ApiResponseDto<List<SaleProductViewDto>>> GetAllSales(SaleOptions saleOptions)
         {
             var query = _dbContext.Sales

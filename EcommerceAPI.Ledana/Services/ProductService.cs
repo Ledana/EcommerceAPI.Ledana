@@ -23,7 +23,7 @@ namespace EcommerceAPI.Ledana.Services
         public async Task<ApiResponseDto<List<Product>?>> GetAllProducts(ProductOptions productOptions)
         {
             var query = _dbContext.Products
-                .Include(p => p.Category)
+                .Include(p => p.Category).Where(p => p.Stock > 0)
                 .AsQueryable();
 
             var totalProducts = await query.CountAsync();
@@ -90,7 +90,8 @@ namespace EcommerceAPI.Ledana.Services
         }
         public async Task<ApiResponseDto<List<Product>?>> GetAllProducts()
         {
-            var products = await _dbContext.Products.Include(p => p.Category).ToListAsync();
+            var products = await _dbContext.Products.Where(p => p.Stock > 0)
+                .Include(p => p.Category).ToListAsync();
             if (products is null) return new()
             {
                 RequestFailed = true,
