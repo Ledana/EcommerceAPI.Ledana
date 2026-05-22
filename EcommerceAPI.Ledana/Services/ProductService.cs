@@ -22,8 +22,10 @@ namespace EcommerceAPI.Ledana.Services
 
         public async Task<ApiResponseDto<List<Product>?>> GetAllProducts(ProductOptions productOptions)
         {
+            //when calling get product with pagination the user can view, update or delete products.
+            //so they will see even products with stock equal to 0
             var query = _dbContext.Products
-                .Include(p => p.Category).Where(p => p.Stock > 0)
+                .Include(p => p.Category)
                 .AsQueryable();
 
             var totalProducts = await query.CountAsync();
@@ -90,6 +92,8 @@ namespace EcommerceAPI.Ledana.Services
         }
         public async Task<ApiResponseDto<List<Product>?>> GetAllProducts()
         {
+            //when calling get products without pagination user can add these products to a new sale
+            //so they will see only products with stock greater then zero
             var products = await _dbContext.Products.Where(p => p.Stock > 0)
                 .Include(p => p.Category).ToListAsync();
             if (products is null) return new()

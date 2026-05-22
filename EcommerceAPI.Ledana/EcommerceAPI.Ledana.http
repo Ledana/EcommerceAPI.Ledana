@@ -33,12 +33,14 @@ GET {{EcommerceAPI.Ledana_HostAddress}}/api/sale
 
 ###
 
-@id=0
+@id=25
 PUT {{EcommerceAPI.Ledana_HostAddress}}/api/product/{{id}}
 Content-Type: application/json
 
 {
-  //ProductUpdateDto
+  "name": "ColorFull Keyboard",
+"stock": 150,
+"categoryId": 1
 }
 
 ###

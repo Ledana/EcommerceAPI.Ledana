@@ -35,5 +35,14 @@ namespace ECommerceUI.Ledana
             return num;
         }
 
+        internal static bool ValidateStock(int stock)
+        {
+            return stock > 0;
+        }
+
+        internal static bool ValidatePrice(decimal price)
+        {
+            return price > 0;
+        }
     }
 }

@@ -23,16 +23,30 @@ namespace ECommerceUI.Ledana.Controllers
                 TableVisualisation.ShowCategories(categories);
 
             int id = await CategoryUIService.GetCategoryId("Please choose the id of the category for new product");
-            if (id == 0) return;
+            if (id == 0)
+            {
+                Console.WriteLine("Category doesn't exist");
+                return;
+            }
 
             string name = ProductUIService.GetProductName("Please put the name of the new product");
             if (name.ToLower() == "x") return;
 
-            int stock = Helper.GetIntInput("Please put the stock of new product");// ProductUIService.GetStock("Please put the stock of new product");
+            int stock = Helper.GetIntInput("Please put the stock of new product");
             if (stock == 0) return;
+            if (!Helper.ValidateStock(stock))
+            {
+                Console.WriteLine("Stock must be bigger then 0");
+                return;
+            }
 
-            decimal price = Helper.GetDecimalInput("Please put the price of the product"); //ProductUIService.GetProductPrice();
+            decimal price = Helper.GetDecimalInput("Please put the price of the product");
             if (price == 0m) return;
+            if (!Helper.ValidatePrice(price))
+            {
+                Console.WriteLine("Price must be bigger then 0");
+                return;
+            }
 
             ProductDto product = new()
             {
@@ -138,6 +152,11 @@ namespace ECommerceUI.Ledana.Controllers
 
                 int stock = ProductUIService.GetStock("Please put the new stock of the product");
                 if (stock == 0) return;
+                if (!Helper.ValidateStock(stock))
+                {
+                    Console.WriteLine("Stock must be bigger then 0");
+                    return;
+                }
 
                 ProductUpdateDto product = new()
                 {

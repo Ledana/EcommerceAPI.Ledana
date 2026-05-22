@@ -12,10 +12,14 @@ namespace ECommerceUI.Ledana.Clients
             try
             {
                 var response = await _client.PostAsJsonAsync("https://localhost:7077/api/product", product);
-                if (response.IsSuccessStatusCode)
-                    return "Product added successfully!";
+                var result = await response.Content.ReadFromJsonAsync<ApiResponseDto<Product>>();
 
-                return "Creating product didn't work";
+                if (response is null) return "Creating product didn't work ";
+
+                if (response.IsSuccessStatusCode)
+                    return "Product added succesfully";
+
+                return "Creating product didn't work ";
             }
             catch (Exception e)
             {

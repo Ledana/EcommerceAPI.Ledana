@@ -46,7 +46,15 @@ namespace EcommerceAPI.Ledana.Controllers
         [HttpPost]
         public async Task<ActionResult<ApiResponseDto<Product>>> Post([FromBody] ProductDto product)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(e => e.Value.Errors.Count > 0)
+                    .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray());
+                return BadRequest(errors);
+            }
 
             ApiResponseDto<Product> result = await _productService.CreateProduct(product);
 
