@@ -32,9 +32,9 @@ namespace EcommerceAPI.Ledana.Services
             List<Product>? products;
 
             if (productOptions.Name is not null)
-                query = query.Where(p => p.Name == productOptions.Name);
+                query = query.Where(p => p.Name.ToLower() == productOptions.Name.ToLower());
             if (productOptions.Category is not null)
-                query = query.Where(p => p.Category.Name == productOptions.Category);
+                query = query.Where(p => p.Category.Name.ToLower() == productOptions.Category.ToLower());
             if (productOptions.Price is not null)
                 query = query.Where(p => p.Price <= productOptions.Price);
             if (productOptions.Stock is not null)

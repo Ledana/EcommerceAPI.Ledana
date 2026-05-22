@@ -15,7 +15,7 @@ namespace ECommerceUI.Ledana.Services
             int quantity;
             decimal discount;
             decimal totalPrice = 0m;
-            var products = await productApiClient.GetProducts();
+            var products = await productApiClient.GetProductsWithoutPagination();
             if(products is null)
             {
                 Console.WriteLine("Validating products went wrong please close the app and try again");

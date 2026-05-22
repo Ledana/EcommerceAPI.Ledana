@@ -18,8 +18,10 @@ namespace ECommerceUI.Ledana
             return id;
         }
 
-        internal static bool IsProductIdCorrect(int id, List<Product> products)
+        internal static bool IsProductIdCorrect(int id, List<Product>? products)
         {
+            if (products is null) return false;
+
             return products.Any(p => p.Id == id);
         }
         internal static decimal GetDecimalInput(string message)

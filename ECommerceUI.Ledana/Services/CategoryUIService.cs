@@ -10,12 +10,15 @@ namespace ECommerceUI.Ledana.Services
         internal static async Task<int> GetCategoryId(string message)
         {
             int id = Helper.GetIntInput(message);
+            if (id == 0) return 0;
+
             var categories = await categoryApiClient.GetCategories();
             if (categories is null) return 0;
 
             if (categories.Any(c => c.Id == id))
                 return id;
 
+            Console.WriteLine("Id is not correct");
             return 0;
         }
 

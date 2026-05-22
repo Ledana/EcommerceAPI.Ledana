@@ -6,7 +6,6 @@ using EcommerceAPI.Ledana.Models;
 using EcommerceAPI.Ledana.Options;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using System.Xml.Linq;
 
 namespace EcommerceAPI.Ledana.Services
 {
@@ -23,9 +22,9 @@ namespace EcommerceAPI.Ledana.Services
 
         public async Task<ApiResponseDto<Sale>> CreateSale(SaleDto sale)
         {
-            
+
             var newSale = _mapper.Map<Sale>(sale);
-            
+
 
             foreach (var item in newSale.SaleProducts)
             {
@@ -139,9 +138,9 @@ namespace EcommerceAPI.Ledana.Services
             List<SaleProductViewDto>? sales;
 
             if (saleOptions.ProductName is not null)
-                query = query.Where(s => s.Products.Any(p => p.ProductName == saleOptions.ProductName));
+                query = query.Where(s => s.Products.Any(p => p.ProductName.ToLower() == saleOptions.ProductName.ToLower()));
             if (saleOptions.CategoryName is not null)
-                query = query.Where(s => s.Products.Any(p => p.CategoryName == saleOptions.CategoryName));
+                query = query.Where(s => s.Products.Any(p => p.CategoryName.ToLower() == saleOptions.CategoryName.ToLower()));
             if (saleOptions.TotalPrice is not null)
                 query = query.Where(s => s.TotalPrice <= saleOptions.TotalPrice);
             if (saleOptions.Date.HasValue)
@@ -216,7 +215,7 @@ namespace EcommerceAPI.Ledana.Services
                         Discount = sp.Discount,
                         TotalPrice = sp.TotalPrice
                     }).ToList()
-                }).FirstAsync(s => s.SaleId == id);;
+                }).FirstAsync(s => s.SaleId == id); ;
 
             if (sale is null) return new()
             {

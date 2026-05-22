@@ -23,6 +23,8 @@ namespace ECommerceUI.Ledana.Controllers
         {
             await ViewCategories();
             int categoryId = await CategoryUIService.GetCategoryId("Please put the id of the category you want to delete");
+            if (categoryId == 0) return;
+
             Console.WriteLine(await categoryApiClient.DeleteCategory(categoryId));
         }
 
@@ -30,6 +32,7 @@ namespace ECommerceUI.Ledana.Controllers
         {
             await ViewCategories();
             int categoryId = await CategoryUIService.GetCategoryId("Please put the id of the category you want to update");
+            if (categoryId == 0) return;
 
             string categoryName = CategoryUIService.GetCategoryName("Please put the name of the new category");
             CategoryDto categoryDto = new()
@@ -51,6 +54,7 @@ namespace ECommerceUI.Ledana.Controllers
         {
             await ViewCategories();
             int categoryId = await CategoryUIService.GetCategoryId("Please put the id of the category you want to view");
+            if (categoryId == 0) return;
 
             var category = await categoryApiClient.GetCategoryById(categoryId);
             if (category is null)

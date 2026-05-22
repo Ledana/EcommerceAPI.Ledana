@@ -112,11 +112,17 @@ namespace ECommerceUI.Ledana.Controllers
 
             int id = Helper.GetIntInput("Please put the id of the product you want to delete");
             var products = await productApiClient.GetProducts();
-            if (products is null || products.Count == 0)
+            if (products is null)
             {
                 Console.WriteLine("No products found"); return;
             }
-            if (Helper.IsProductIdCorrect(id, products))
+            if (products.Data is not null && products.Data.Count == 0)
+            {
+                Console.WriteLine("No products found");
+                return;
+            }
+
+            if (Helper.IsProductIdCorrect(id, products.Data))
                 Console.WriteLine(await productApiClient.DeleteProduct(id));
             else
                 Console.WriteLine("Id is incorrect");
@@ -135,14 +141,19 @@ namespace ECommerceUI.Ledana.Controllers
                 ViewAllProducts(ref response, ref pageNumber, ref pageSize, ref keepRunning);
             }
             var products = await productApiClient.GetProducts();
-            if (products is null || products.Count == 0)
+            if (products is null)
             {
                 Console.WriteLine("No products found");
                 return;
             }
-            
+            if ( products.Data is not null && products.Data.Count == 0)
+            {
+                Console.WriteLine("No products found");
+                    return;
+            }
+
             int id = Helper.GetIntInput("Please put the id of the product you want to update");
-            if (Helper.IsProductIdCorrect(id, products))
+            if (Helper.IsProductIdCorrect(id, products.Data))
             {
                 int categoryId = await CategoryUIService.GetCategoryId("Please choose the new id of the category for the product");
                 if (categoryId == 0) return;
@@ -218,7 +229,7 @@ namespace ECommerceUI.Ledana.Controllers
             await ViewAllProductsOrderedById();
             int id = Helper.GetIntInput("Please put the id of the product");
             var products = await productApiClient.GetProducts();
-            if(products is not null && Helper.IsProductIdCorrect(id, products))
+            if(products is not null && Helper.IsProductIdCorrect(id, products.Data))
             {
                 var product = await productApiClient.GetProductById(id);
                 if(product is null)

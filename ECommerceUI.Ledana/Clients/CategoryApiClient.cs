@@ -71,7 +71,7 @@ namespace ECommerceUI.Ledana.Clients
             }
             catch (Exception e)
             {
-                Console.WriteLine("Getting categories didn't work " + e.Message);
+                Console.WriteLine("Getting category didn't work " + e.Message);
                 return null;
             }
         }
